@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html> 
-<html> 
+<html ng-app>
 <head> 
 	<title>My Page</title> 
 
@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="style.css" />	
 	<script src="jquery.mobile-1.3.0/jquery-1.9.1.js"></script>
 	<script src="jquery.mobile-1.3.0/jquery.mobile-1.3.0.min.js"></script>
+	<script src="angular.min.js"></script>
 	
 	        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="format-detection" content="telephone=no" />
@@ -18,80 +19,71 @@
 
 <div data-role="page" data-theme="b" href="#main">
 	<div data-role="header" data-theme="d" id="header">
-		<h1>冰箱能耗计算</h1>
+		<h1>Refrigerator Energy Efficiency Calculator</h1>
 	</div><!-- /header -->
 
 <div data-role="content" style="padding:10px;">
 		<div data-role="collapsible-set" data-theme="b">
 			<div data-role="collapsible" data-content-theme="d">
-			<h3>耗电量
+			<h3>Electricity Power Comsumption
 			&nbsp;&nbsp;
 			<span id="abs_rated"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="abs_measured"></span> </h3>
 				<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
 					<li data-role="fieldcontain">
-						<label for="ratedPowerConsumption">额定值(KW·h/24h):</label>
-						<input type="number" name="ratedPowerConsumption" id="ratedPowerConsumption" value="" step=0.01 min=0 />
+						<label for="ratedPowerConsumption">Rated(KW·h/24h):</label>
+						<input type="number" name="ratedPowerConsumption" id="ratedPowerConsumption" value="" step=0.01 min=0 ng-model="ratedPowerConsumption"/>
 					</li>
 					<li data-role="fieldcontain">
-						<label for="measuredPowerConsumption">实测值(KW·h/24h):</label>
-						<input type="number" name="measuredPowerConsumption" id="measuredPowerConsumption" value="" step=0.01 min=0/>
+						<label for="measuredPowerConsumption">Measured(KW·h/24h):</label>
+						<input type="number" name="measuredPowerConsumption" id="measuredPowerConsumption" value="" step=0.01 min=0 ng-model="measuredPowerConsumption"/>
 					</li>
 					<li data-role="fieldcontain">
-						<label for="measuredDRated">实测值/额定值:</label>
-						<input type="text" name="measuredDRated" id="measuredDRated" value="" disabled  />
+						<label for="measuredDRated">Rated/Measured:</label>
+						<input type="text" name="measuredDRated" id="measuredDRated" value="{{measuredPowerConsumption / ratedPowerConsumption}}" disabled />
 					</li>
 					<li data-role="fieldcontain">
-						<label for="PowerConsumptionLimit">限值:</label>
-						<input type="text" name="PowerConsumptionLimit" id="PowerConsumptionLimit" value="" disabled />
+						<label for="PowerConsumptionLimit">limit:</label>
+						<input type="text" name="PowerConsumptionLimit" id="PowerConsumptionLimit" value="{{ratedPowerConsumption * 1.15 }}" disabled />
 					</li></ul>
 			</div>
 			<div data-role="collapsible" data-content-theme="d">
-			<h3>容积
+			<h3>Volume
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<span id="vol"></span></h3>
 					<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
 					<li data-role="fieldcontain">
-						<label for="ratedVolume">额定容积(L):</label>					
-						<input type="number" name="ratedVolume" id="ratedVolume" value="" min=0  />
+						<label for="ratedVolume">Rated(L):</label>					
+						<input type="number" name="ratedVolume" id="ratedVolume" value="" min=0 ng-model="ratedVolume"/>
 					</li>
 				</ul></div>
 
 			<div data-role="collapsible" data-content-theme="d">
-			<h3>气候类型
+			<h3>Climate Type
 			&nbsp;&nbsp;
 			<span id="clitype"></span></h3>
 				<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
 					
 					<li data-role="fieldcontain">
 								<fieldset data-role="controlgroup">
-									<legend>电冰箱气候类型:</legend>
+									<legend>Climate Type of the Fridge:</legend>
+									<form>
 									<input type="checkbox" name="checkbox-1a" id="checkbox-1a" class="custom climateAdditional" />
-									<label for="checkbox-1a">亚温带型(SN)</label>
+									<label for="checkbox-1a">SN</label>
 
 									<input type="checkbox" name="checkbox-2a" id="checkbox-2a" class="custom climateAdditional" />
-									<label for="checkbox-2a">温带型(N)</label>
+									<label for="checkbox-2a">N</label>
 
 									<input type="checkbox" name="checkbox-3a" id="checkbox-3a" class="custom climateAdditional" />
-									<label for="checkbox-3a">亚热带型(ST)</label>
+									<label for="checkbox-3a">ST</label>
 
-									<input type="checkbox" name="checkbox-4a" id="checkbox-4a" class="custom climateAdditional" />
-									<label for="checkbox-4a">热带性(T)</label>
+									<input type="checkbox" name="checkbox-4a" id="checkbox-4a" class="custom climateAdditional" ng-mode="cb" />
+									<label for="checkbox-4a">T</label>
+									</form>
 								</fieldset>
 					</li>
-					<li data-role = "fieldcontain" style="display:none;">
-						<label for="climateType" class="select">电冰箱气候类型:</label>
-						<select name="climateType" id="climateType" data-native-menu="true" data-theme="c">
-							<option value=" ">无</option>
-							<option value="SN">亚温带型(SN)</option>
-							<option value="N">温带型(N)</option>
-							<option value="ST">亚热带型(ST)</option>
-							<option value="T">热带性(T)</option>
-						</select>
-				
-					</li>
 					<li data-role="fieldcontain">
-						<label for="CC">气候类型修正系数:</label>
-						<input type="text" name="CC" id="CC" value="" disabled />
+						<label for="CC">coefficient (CC):</label>
+						<input type="text" name="CC" id="CC" value='' disabled />
 					</li>
 				</ul></div>
 	
@@ -627,7 +619,7 @@
 </div>	
 </div><!-- /page -->
 
-<script src="Calculation.js"></script>
+
 <script>
 $(document).bind("mobileinit", function(){
   $.extend(  $.mobile , {
@@ -636,36 +628,6 @@ $(document).bind("mobileinit", function(){
   });
   $.mobile.buttonMarkup.hoverDelay=0;
   jQuery.fx.off = true;
-});
-
-$("#header").click();
-$("input[type='text'],input[type='number']").each(function(){
-	var self = this;
-	if( $(this).attr("disabled")) return;
-	else{
-		$(this).click(function(){
-			
-			var info = $(self).parent().children("label").first().text();
-			if(!info) info = $(self).parent().text();
-			var p = prompt(info);
-			if(p !== null) $(self).val(p);
-
-			$(self).blur();
-			
-			})
-	}
-})
-$(".climateAdditional").click(function(){
-	$("#climateType").val("");
-	$("#clitype").html("");
-	if( $("#checkbox-1a").attr("checked") ) {$("#climateType").val("SN");$("#clitype").html($("#clitype").html()+"SN ");}
-	if( $("#checkbox-2a").attr("checked") ) {$("#climateType").val("N");$("#clitype").html($("#clitype").html()+"N ");}
-	if( $("#checkbox-3a").attr("checked") ) {$("#climateType").val("ST");$("#clitype").html($("#clitype").html()+"ST ");}
-	if( $("#checkbox-4a").attr("checked") ) {$("#climateType").val("T");$("#clitype").html($("#clitype").html()+"T ");}
-	
-	
-	$("#clitype").html()
-	$("#climateType").blur();
 });
 
 </script>
