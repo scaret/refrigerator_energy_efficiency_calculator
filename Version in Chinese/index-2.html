@@ -1,0 +1,682 @@
+﻿<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>My Page</title> 
+
+	<link rel="stylesheet" href="jquery.mobile-1.2.0/jquery.mobile-1.2.0.min.css" />
+	<link rel="stylesheet" href="style.css" />	
+	<script src="jquery.mobile-1.2.0/jquery-1.8.3.min.js"></script>
+	<script src="jquery.mobile-1.2.0/jquery.mobile-1.2.0.min.js"></script>
+	
+	        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=540px, height=device-height" />
+
+	
+</head> 
+<body> 
+
+<div data-role="page" data-theme="b" href="#main">
+	<div data-role="header" data-theme="d" id="header">
+		<h1>冰箱能耗计算</h1>
+	</div><!-- /header -->
+
+<div data-role="content" style="padding:10px;">
+		<div data-role="collapsible-set" data-theme="b">
+			<div data-role="collapsible" data-content-theme="d">
+			<h3>耗电量
+			&nbsp;&nbsp;
+			<span id="abs_rated"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="abs_measured"></span> </h3>
+				<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+					<li data-role="fieldcontain">
+						<label for="ratedPowerConsumption">额定值(KW·h/24h):</label>
+						<input type="number" name="ratedPowerConsumption" id="ratedPowerConsumption" value="" step=0.01 min=0 />
+					</li>
+					<li data-role="fieldcontain">
+						<label for="measuredPowerConsumption">实测值(KW·h/24h):</label>
+						<input type="number" name="measuredPowerConsumption" id="measuredPowerConsumption" value="" step=0.01 min=0/>
+					</li>
+					<li data-role="fieldcontain">
+						<label for="measuredDRated">实测值/额定值:</label>
+						<input type="text" name="measuredDRated" id="measuredDRated" value="" disabled  />
+					</li>
+					<li data-role="fieldcontain">
+						<label for="PowerConsumptionLimit">限值:</label>
+						<input type="text" name="PowerConsumptionLimit" id="PowerConsumptionLimit" value="" disabled />
+					</li></ul>
+			</div>
+			<div data-role="collapsible" data-content-theme="d">
+			<h3>容积
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span id="vol"></span></h3>
+					<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+					<li data-role="fieldcontain">
+						<label for="ratedVolume">额定容积(L):</label>					
+						<input type="number" name="ratedVolume" id="ratedVolume" value="" min=0  />
+					</li>
+				</ul></div>
+
+			<div data-role="collapsible" data-content-theme="d">
+			<h3>气候类型
+			&nbsp;&nbsp;
+			<span id="clitype"></span></h3>
+				<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
+					
+					<li data-role="fieldcontain">
+								<fieldset data-role="controlgroup">
+									<legend>电冰箱气候类型:</legend>
+									<input type="checkbox" name="checkbox-1a" id="checkbox-1a" class="custom climateAdditional" />
+									<label for="checkbox-1a">亚温带型(SN)</label>
+
+									<input type="checkbox" name="checkbox-2a" id="checkbox-2a" class="custom climateAdditional" />
+									<label for="checkbox-2a">温带型(N)</label>
+
+									<input type="checkbox" name="checkbox-3a" id="checkbox-3a" class="custom climateAdditional" />
+									<label for="checkbox-3a">亚热带型(ST)</label>
+
+									<input type="checkbox" name="checkbox-4a" id="checkbox-4a" class="custom climateAdditional" />
+									<label for="checkbox-4a">热带性(T)</label>
+								</fieldset>
+					</li>
+					<li data-role = "fieldcontain" style="display:none;">
+						<label for="climateType" class="select">电冰箱气候类型:</label>
+						<select name="climateType" id="climateType" data-native-menu="true" data-theme="c">
+							<option value=" ">无</option>
+							<option value="SN">亚温带型(SN)</option>
+							<option value="N">温带型(N)</option>
+							<option value="ST">亚热带型(ST)</option>
+							<option value="T">热带性(T)</option>
+						</select>
+				
+					</li>
+					<li data-role="fieldcontain">
+						<label for="CC">气候类型修正系数:</label>
+						<input type="text" name="CC" id="CC" value="" disabled />
+					</li>
+				</ul></div>
+	
+						<div data-role="collapsible" data-content-theme="d">
+					<h3>冰箱类型&nbsp;&nbsp;&nbsp;
+						<span id="abs_m"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="abs_n"></h3>
+				<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">					
+					<li data-role="fieldcontain">
+						<label for="freezerType" class="select">冷藏箱/冷冻箱类型:</label>
+						<select name="freezerType" id="freezerType" data-native-menu="true" data-theme="c">
+							<option value="0">无星级室的冷藏箱</option>
+							<option value="1">带1星级室的冷藏箱</option>
+							<option value="2">带2星级室的冷藏箱</option>
+							<option value="3">带3星级室的冷藏箱</option>
+							<option value="4">冷藏冷冻箱</option>
+							<option value="5">冷冻食品储藏箱</option>
+							<option value="6">食品冷冻箱</option>
+						</select>
+				
+					</li>
+					
+					<li data-role="fieldcontain">
+						<label for="M">参数M/(kW·h/L):</label>
+						<input type="text" name="M" id="M" value="" disabled />
+					</li>
+					
+					<li data-role="fieldcontain">
+						<label for="N">参数N/(kW·h/L):</label>
+						<input type="text" name="N" id="N" value="" disabled />
+					</li>
+				</ul></div>
+				
+				<div data-role="collapsible" data-content-theme="d">
+						<h3>容积修正 
+						&nbsp;&nbsp;
+						</span><span id="abs_ch"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="abs_sr"></span></h3>
+				<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">					
+					<li data-role="fieldcontain">
+						<fieldset data-role="controlgroup">
+						   <input type="checkbox" name="volume15Check" id="volume15Check" class="custom" data-theme="c"/>
+						   <label for="volume15Check" data-native-menu="true">电冰箱内含有15L及以上容积,具有冰温区功能变温室</label>
+						</fieldset>
+					</li>
+					
+					<li data-role="fieldcontain">
+						<label for="CH">变温室修正系数(kW·h)</label>
+						<input type="text" name="CH" id="CH" value="" disabled />
+					</li>
+					
+										<li data-role="fieldcontain">
+						<fieldset data-role="controlgroup">
+						   <label for="volume100Check">电冰箱容积≤100L,或≥400L,并带有穿透式自动制冰功能</label>						
+						   <input type="checkbox" name="volume100Check" id="volume100Check" class="custom" data-theme="c" />
+						</fieldset>
+					</li>
+					
+					<li data-role="fieldcontain">
+						<label for="Sr">穿透式自动制冰修正系数</label>
+						<input type="text" name="Sr" id="Sr" value="" disabled />
+					</li>
+				</ul></div>
+				
+				</div>
+				<div data-role="collapsible-set" data-theme="e">
+				
+					<div data-role="collapsible"  data-content-theme="d" data-collapsed="true">
+						<h3>间室1:&nbsp;&nbsp;<span class="chamberAbstract">无</span>&nbsp;&nbsp;<span class="chamberAbstract2"></span></h3>
+
+							<!--间室列表 -->
+							<ul data-role="listview" class="chamberSetting" data-inset="true" data-theme="c" data-dividertheme="d">
+								<li data-role="fieldcontain">
+									<label>间室类型
+									<select name="chamberType" class="chamberType" data-native-menu="true" data-theme="c">					
+										<option value="0">无</option>
+										<option value="1">冷藏室</option>
+										<option value="2">冷却室</option>
+										<option value="3">冰温室</option>
+										<option value="4">1星级室</option>
+										<option value="5">2星级室</option>
+										<option value="6">3星级室</option>
+										<option value="7">冷冻室</option>
+										<option value="8">其他间室</option>
+									</select></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>特性温度(℃)
+									<input type="text" name="chamberTemperature" class="chamberTemperature" value="" /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>加权系数
+									<input type="text" name="chamberRatio" class="chamberRatio" value="" disabled /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>间室制冷系统
+									<select name="chamberRFSystem" class="chamberRFSystem" data-native-menu="true" data-theme="c">					
+										<option value="1.4">无霜 F<sub>c</sub> = 1.4</option>
+										<option value="1" selected>直冷 F<sub>c</sub> = 1.0</option>
+									</select></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>实测有效容积(L)
+									<input type="number" name="chamberMeasuredVolume" class="chamberMeasuredVolume" value="" step=0.01 /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>调整容积(L)
+									<input type="text" name="chamberAdjustedVolume" class="chamberAdjustedVolume" value="" disabled /></label>
+									</li>
+							</ul>
+							<!-- /间室列表-->				
+					</div>
+					<div data-role="collapsible" data-content-theme="d">
+						<h3>间室2:&nbsp;&nbsp;<span class="chamberAbstract">无</span>&nbsp;&nbsp;<span class="chamberAbstract2"> </span></h3>
+
+							<!--间室列表 -->
+							<ul data-role="listview" class="chamberSetting" data-inset="true" data-theme="c" data-dividertheme="d">
+								<li data-role="fieldcontain">
+									<label>间室类型
+									<select name="chamberType" class="chamberType" data-native-menu="true" data-theme="c">					
+										<option value="0">无</option>
+										<option value="1">冷藏室</option>
+										<option value="2">冷却室</option>
+										<option value="3">冰温室</option>
+										<option value="4">1星级室</option>
+										<option value="5">2星级室</option>
+										<option value="6">3星级室</option>
+										<option value="7">冷冻室</option>
+										<option value="8">其他间室</option>
+									</select></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>特性温度(℃)
+									<input type="text" name="chamberTemperature" class="chamberTemperature" value="" /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>加权系数
+									<input type="text" name="chamberRatio" class="chamberRatio" value="" disabled /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>间室制冷系统
+									<select name="chamberRFSystem" class="chamberRFSystem" data-native-menu="true" data-theme="c">					
+										<option value="1.4">无霜 F<sub>c</sub> = 1.4</option>
+										<option value="1" selected>直冷 F<sub>c</sub> = 1.0</option>
+									</select></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>实测有效容积(L)
+									<input type="number" name="chamberMeasuredVolume" class="chamberMeasuredVolume" value="" step=0.01 /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>调整容积(L)
+									<input type="text" name="chamberAdjustedVolume" class="chamberAdjustedVolume" value="" disabled /></label>
+									</li>
+							</ul>
+							<!-- /间室列表-->				
+					</div>
+					<div data-role="collapsible" data-content-theme="d">
+						<h3>间室3:&nbsp;&nbsp;<span class="chamberAbstract">无</span>&nbsp;&nbsp;<span class="chamberAbstract2"></span></h3>
+
+							<!--间室列表 -->
+							<ul data-role="listview" class="chamberSetting" data-inset="true" data-theme="c" data-dividertheme="d">
+								<li data-role="fieldcontain">
+									<label>间室类型
+									<select name="chamberType" class="chamberType" data-native-menu="true" data-theme="c">					
+										<option value="0">无</option>
+										<option value="1">冷藏室</option>
+										<option value="2">冷却室</option>
+										<option value="3">冰温室</option>
+										<option value="4">1星级室</option>
+										<option value="5">2星级室</option>
+										<option value="6">3星级室</option>
+										<option value="7">冷冻室</option>
+										<option value="8">其他间室</option>
+									</select></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>特性温度(℃)
+									<input type="text" name="chamberTemperature" class="chamberTemperature" value="" /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>加权系数
+									<input type="text" name="chamberRatio" class="chamberRatio" value="" disabled /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>间室制冷系统
+									<select name="chamberRFSystem" class="chamberRFSystem" data-native-menu="true" data-theme="c">					
+										<option value="1.4">无霜 F<sub>c</sub> = 1.4</option>
+										<option value="1" selected>直冷 F<sub>c</sub> = 1.0</option>
+									</select></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>实测有效容积(L)
+									<input type="number" name="chamberMeasuredVolume" class="chamberMeasuredVolume" value="" step=0.01 /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>调整容积(L)
+									<input type="text" name="chamberAdjustedVolume" class="chamberAdjustedVolume" value="" disabled /></label>
+									</li>
+							</ul>
+							<!-- /间室列表-->				
+					</div>
+					<div data-role="collapsible"  data-content-theme="d">
+						<h3>间室4:&nbsp;&nbsp;<span class="chamberAbstract">无</span>&nbsp;&nbsp;<span class="chamberAbstract2"></span></h3>
+
+							<!--间室列表 -->
+							<ul data-role="listview" class="chamberSetting" data-inset="true" data-theme="c" data-dividertheme="d">
+								<li data-role="fieldcontain">
+									<label>间室类型
+									<select name="chamberType" class="chamberType" data-native-menu="true" data-theme="c">					
+										<option value="0">无</option>
+										<option value="1">冷藏室</option>
+										<option value="2">冷却室</option>
+										<option value="3">冰温室</option>
+										<option value="4">1星级室</option>
+										<option value="5">2星级室</option>
+										<option value="6">3星级室</option>
+										<option value="7">冷冻室</option>
+										<option value="8">其他间室</option>
+									</select></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>特性温度(℃)
+									<input type="text" name="chamberTemperature" class="chamberTemperature" value="" /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>加权系数
+									<input type="text" name="chamberRatio" class="chamberRatio" value="" disabled /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>间室制冷系统
+									<select name="chamberRFSystem" class="chamberRFSystem" data-native-menu="true" data-theme="c">					
+										<option value="1.4">无霜 F<sub>c</sub> = 1.4</option>
+										<option value="1" selected>直冷 F<sub>c</sub> = 1.0</option>
+									</select></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>实测有效容积(L)
+									<input type="number" name="chamberMeasuredVolume" class="chamberMeasuredVolume" value="" step=0.01 /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>调整容积(L)
+									<input type="text" name="chamberAdjustedVolume" class="chamberAdjustedVolume" value="" disabled /></label>
+									</li>
+							</ul>
+							<!-- /间室列表-->				
+					</div>
+					<div data-role="collapsible"  data-content-theme="d">
+						<h3>间室5:&nbsp;&nbsp;<span class="chamberAbstract">无</span>&nbsp;&nbsp;<span class="chamberAbstract2"></span></h3>
+
+							<!--间室列表 -->
+							<ul data-role="listview" class="chamberSetting" data-inset="true" data-theme="c" data-dividertheme="d">
+								<li data-role="fieldcontain">
+									<label>间室类型
+									<select name="chamberType" class="chamberType" data-native-menu="true" data-theme="c">					
+										<option value="0">无</option>
+										<option value="1">冷藏室</option>
+										<option value="2">冷却室</option>
+										<option value="3">冰温室</option>
+										<option value="4">1星级室</option>
+										<option value="5">2星级室</option>
+										<option value="6">3星级室</option>
+										<option value="7">冷冻室</option>
+										<option value="8">其他间室</option>
+									</select></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>特性温度(℃)
+									<input type="text" name="chamberTemperature" class="chamberTemperature" value="" /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>加权系数
+									<input type="text" name="chamberRatio" class="chamberRatio" value="" disabled /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>间室制冷系统
+									<select name="chamberRFSystem" class="chamberRFSystem" data-native-menu="true" data-theme="c">					
+										<option value="1.4">无霜 F<sub>c</sub> = 1.4</option>
+										<option value="1" selected>直冷 F<sub>c</sub> = 1.0</option>
+									</select></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>实测有效容积(L)
+									<input type="number" name="chamberMeasuredVolume" class="chamberMeasuredVolume" value="" step=0.01 /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>调整容积(L)
+									<input type="text" name="chamberAdjustedVolume" class="chamberAdjustedVolume" value="" disabled /></label>
+									</li>
+							</ul>
+							<!-- /间室列表-->					
+					</div>
+					<div data-role="collapsible"  data-content-theme="d">
+						<h3>间室6:&nbsp;&nbsp;<span class="chamberAbstract">无</span>&nbsp;&nbsp;<span class="chamberAbstract2"></span></h3>
+
+							<!--间室列表 -->
+							<ul data-role="listview" class="chamberSetting" data-inset="true" data-theme="c" data-dividertheme="d">
+								<li data-role="fieldcontain">
+									<label>间室类型
+									<select name="chamberType" class="chamberType" data-native-menu="true" data-theme="c">					
+										<option value="0">无</option>
+										<option value="1">冷藏室</option>
+										<option value="2">冷却室</option>
+										<option value="3">冰温室</option>
+										<option value="4">1星级室</option>
+										<option value="5">2星级室</option>
+										<option value="6">3星级室</option>
+										<option value="7">冷冻室</option>
+										<option value="8">其他间室</option>
+									</select></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>特性温度(℃)
+									<input type="text" name="chamberTemperature" class="chamberTemperature" value="" /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>加权系数
+									<input type="text" name="chamberRatio" class="chamberRatio" value="" disabled /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>间室制冷系统
+									<select name="chamberRFSystem" class="chamberRFSystem" data-native-menu="true" data-theme="c">					
+										<option value="1.4">无霜 F<sub>c</sub> = 1.4</option>
+										<option value="1" selected>直冷 F<sub>c</sub> = 1.0</option>
+									</select></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>实测有效容积(L)
+									<input type="number" name="chamberMeasuredVolume" class="chamberMeasuredVolume" value="" step=0.01 /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>调整容积(L)
+									<input type="text" name="chamberAdjustedVolume" class="chamberAdjustedVolume" value="" disabled /></label>
+									</li>
+							</ul>
+							<!-- /间室列表-->				
+					</div>
+					<div data-role="collapsible"  data-content-theme="d">
+						<h3>间室7:&nbsp;&nbsp;<span class="chamberAbstract">无</span>&nbsp;&nbsp;<span class="chamberAbstract2"></span></h3>
+
+							<!--间室列表 -->
+							<ul data-role="listview" class="chamberSetting" data-inset="true" data-theme="c" data-dividertheme="d">
+								<li data-role="fieldcontain">
+									<label>间室类型
+									<select name="chamberType" class="chamberType" data-native-menu="true" data-theme="c">					
+										<option value="0">无</option>
+										<option value="1">冷藏室</option>
+										<option value="2">冷却室</option>
+										<option value="3">冰温室</option>
+										<option value="4">1星级室</option>
+										<option value="5">2星级室</option>
+										<option value="6">3星级室</option>
+										<option value="7">冷冻室</option>
+										<option value="8">其他间室</option>
+									</select></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>特性温度(℃)
+									<input type="text" name="chamberTemperature" class="chamberTemperature" value="" /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>加权系数
+									<input type="text" name="chamberRatio" class="chamberRatio" value="" disabled /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>间室制冷系统
+									<select name="chamberRFSystem" class="chamberRFSystem" data-native-menu="true" data-theme="c">					
+										<option value="1.4">无霜 F<sub>c</sub> = 1.4</option>
+										<option value="1" selected>直冷 F<sub>c</sub> = 1.0</option>
+									</select></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>实测有效容积(L)
+									<input type="number" name="chamberMeasuredVolume" class="chamberMeasuredVolume" value="" step=0.01 /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>调整容积(L)
+									<input type="text" name="chamberAdjustedVolume" class="chamberAdjustedVolume" value="" disabled /></label>
+									</li>
+							</ul>
+							<!-- /间室列表-->				
+					</div>
+					<div data-role="collapsible"  data-content-theme="d">
+						<h3>间室8:&nbsp;&nbsp;<span class="chamberAbstract">无</span>&nbsp;&nbsp;<span class="chamberAbstract2"></span></h3>
+
+							<!--间室列表 -->
+							<ul data-role="listview" class="chamberSetting" data-inset="true" data-theme="c" data-dividertheme="d">
+								<li data-role="fieldcontain">
+									<label>间室类型
+									<select name="chamberType" class="chamberType" data-native-menu="true" data-theme="c">					
+										<option value="0">无</option>
+										<option value="1">冷藏室</option>
+										<option value="2">冷却室</option>
+										<option value="3">冰温室</option>
+										<option value="4">1星级室</option>
+										<option value="5">2星级室</option>
+										<option value="6">3星级室</option>
+										<option value="7">冷冻室</option>
+										<option value="8">其他间室</option>
+									</select></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>特性温度(℃)
+									<input type="text" name="chamberTemperature" class="chamberTemperature" value="" /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>加权系数
+									<input type="text" name="chamberRatio" class="chamberRatio" value="" disabled /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>间室制冷系统
+									<select name="chamberRFSystem" class="chamberRFSystem" data-native-menu="true" data-theme="c">					
+										<option value="1.4">无霜 F<sub>c</sub> = 1.4</option>
+										<option value="1" selected>直冷 F<sub>c</sub> = 1.0</option>
+									</select></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>实测有效容积(L)
+									<input type="number" name="chamberMeasuredVolume" class="chamberMeasuredVolume" value="" step=0.01 /></label>
+									</li>
+								
+								<li data-role="fieldcontain">
+									<label>调整容积(L)
+									<input type="text" name="chamberAdjustedVolume" class="chamberAdjustedVolume" value="" disabled /></label>
+									</li>
+							</ul>
+							<!-- /间室列表-->				
+					</div>
+					
+					
+					
+				</div><!-- end of the collapsible set -->
+				
+				<div id="generated">
+				
+				<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="e">
+					<li data-role="list-divider" class="listTitle" >参数</li>
+					
+					<li>
+						<label for="Vc" class="select">电冰箱总有效容积V<sub>c</sub>(L)</label>
+						<input type="text" name="Vc" id="Vc" value="" disabled />
+					</li>
+					<li>
+						<label for="Vadj" class="select">电冰箱总调整容积V<sub>adj</sub>(L)</label>
+						<input type="text" name="Vadj" id="Vadj" value="" disabled />
+					</li>
+					<li>
+						<label for="VPercent" class="select">电冰箱总有效容积应≥额定容积的97%</label>
+						<input type="text" name="VPercent" id="VPercent" value="" disabled />
+					</li>
+					<li>
+						<label for="Ebase" class="select">电冰箱基准耗电量E<sub>base</sub>(kW·h/24h):</label>
+						<input type="text" name="Ebase" id="Ebase" value="" disabled />
+					</li>
+					<li>
+						<label for="Emax" class="select">电冰箱耗电量限定值E<sub>max</sub>(kW·h/24h):</label>
+						<input type="text" name="Emax" id="Emax" value="" disabled />
+					</li>
+				</ul>
+				
+				
+				<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="e">
+					<li data-role="list-divider" class="listTitle" >总评</li>
+					
+					<li data-role="fieldcontain">
+						<label for="ETA" class="select">能效指数η</label>
+						<input type="text" name="ETA" id="ETA" value="" disabled />
+					</li>
+					<li data-role="fieldcontain">
+						<div id="level"><span id = "levelno">1</span>级</div>
+					</li>
+				</ul>
+				</div>
+			
+			<div data-role="controlgroup" style="height:200px;">
+			<a href="#" data-role="button" id = "go" data-theme="b" data-icon="refresh"><p id="go_text">计算能效</p></a>
+			<a href="#copy_content" data-role="button" id = "copy" data-theme="e" data-icon="grid" style="display:none;" data-rel="dialog"><p>复制结果</p></a>
+			<a href="#aboutInfo" data-rel="popup" data-role="button" id = "about" data-theme="c" data-icon="info"><p>关于软件</p></a>
+			</div>
+			
+			
+	</div><!-- /content -->
+	<div data-role="footer">
+		<h1>版权所有 微尘工作室</h1>
+	</div>
+	
+<div data-role="popup" id="aboutInfo"  class="ui-content"  data-position-to="window">
+	<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+	<p>设计者及单位:</p>
+	<p>程序版本号:</p>
+	<p>BUG报告邮箱:</p>
+</div>	
+<div data-role="popup" id="errorinfo"  class="ui-content"  data-position-to="window">
+	<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+	<div id = "errorMsg"></div>
+</div>	
+</div><!-- /page -->
+
+<script src="Calculation.js"></script>
+<script>
+$(document).bind("mobileinit", function(){
+  $.extend(  $.mobile , {
+    defaultDialogTransition: false,
+	defaultPageTransition:	false
+  });
+  $.mobile.buttonMarkup.hoverDelay=0;
+  jQuery.fx.off = true;
+});
+
+$("#header").click();
+$("input[type='text'],input[type='number']").each(function(){
+	var self = this;
+	if( $(this).attr("disabled")) return;
+	else{
+		$(this).click(function(){
+			
+			var info = $(self).parent().children("label").first().text();
+			if(!info) info = $(self).parent().text();
+			var p = prompt(info);
+			if(p !== null) $(self).val(p);
+
+			$(self).blur();
+			
+			})
+	}
+})
+$(".climateAdditional").click(function(){
+	$("#climateType").val("");
+	$("#clitype").html("");
+	if( $("#checkbox-1a").attr("checked") ) {$("#climateType").val("SN");$("#clitype").html($("#clitype").html()+"SN ");}
+	if( $("#checkbox-2a").attr("checked") ) {$("#climateType").val("N");$("#clitype").html($("#clitype").html()+"N ");}
+	if( $("#checkbox-3a").attr("checked") ) {$("#climateType").val("ST");$("#clitype").html($("#clitype").html()+"ST ");}
+	if( $("#checkbox-4a").attr("checked") ) {$("#climateType").val("T");$("#clitype").html($("#clitype").html()+"T ");}
+	
+	
+	$("#clitype").html()
+	$("#climateType").blur();
+});
+
+</script>
+	
+<div data-role="page" id="copy_content">
+<div data-role="content" data-theme="c">
+	<p>请在文本框中自行复制:</p>
+	<textarea id="copy_area">abc
+	def</textarea>
+	<a href="#main" data-role="button" data-theme="c" data-icon="back" data-rel="back">返回</a>
+	</div>
+</div>
+</body>
+</html>

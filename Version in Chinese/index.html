@@ -1,0 +1,33 @@
+<html>
+<body>
+
+<style>
+body{
+	background-color:yellow;
+	background-image:url(pic/loader.png);
+	background-position:center 20%;
+	background-repeat:no-repeat;
+}
+</style>
+	<script src="jquery.mobile-1.2.0/jquery-1.8.3.min.js"></script>
+	<script src="jquery.mobile-1.2.0/jquery.mobile-1.2.0.min.js"></script>
+	
+	        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=2, maximum-scale=2, minimum-scale=2, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+<script>
+setTimeout(function(){
+$.support.cors = true;
+$.mobile.buttonMarkup.hoverDelay=0;
+$.mobile.allowCrossDomainPages = true;
+$.mobile.phonegapNavigationEnabled = true;
+
+document.body.style.backgroundImage="none";
+//this.location.href = "index-2.html";
+$.mobile.changePage ('index-2.html', 'fade', false, false);
+
+},5000);
+</script>
+</body>
+
+</html>
